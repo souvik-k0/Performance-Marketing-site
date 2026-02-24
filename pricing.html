@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing | AdYogi</title>
+    <meta name="description" content="Simple, transparent pricing tailored for your eCommerce growth stage.">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>∞</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="bg-mesh">
+        <div class="mesh-blob blob-1"></div>
+        <div class="mesh-blob blob-2"></div>
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo"><i class="ph-fill ph-infinity"></i><span>AdYogi</span></a>
+            <div class="nav-links">
+                <a href="index.html#solutions">Solutions</a>
+                <a href="pricing.html" class="active-page">Pricing</a>
+                <a href="resources.html">Resources</a>
+                <a href="about.html">About Us</a>
+            </div>
+            <a href="index.html#demo" class="btn btn-primary btn-glow nav-cta">Book a Demo</a>
+            <button class="mobile-menu-btn" id="menu-toggle" aria-label="Toggle menu"><i
+                    class="ph ph-list"></i></button>
+        </div>
+        <div class="mobile-drawer" id="mobile-drawer">
+            <a href="index.html#solutions" class="drawer-link">Solutions</a>
+            <a href="pricing.html" class="drawer-link">Pricing</a>
+            <a href="resources.html" class="drawer-link">Resources</a>
+            <a href="about.html" class="drawer-link">About Us</a>
+            <a href="index.html#demo" class="btn btn-primary btn-full drawer-cta">Book a Demo</a>
+        </div>
+    </nav>
+
+    <!-- Pricing Header -->
+    <header class="page-hero container reveal">
+        <h1 class="display-heading">Simple, Transparent <span class="gradient-text">Pricing</span></h1>
+        <p class="section-subtitle">Plans built to scale with your brand — from rising stars to market leaders.</p>
+        <div class="billing-toggle">
+            <span class="toggle-label" id="monthly-label">Monthly</span>
+            <label class="switch">
+                <input type="checkbox" id="billing-switch">
+                <span class="slider round"></span>
+            </label>
+            <span class="toggle-label active" id="annual-label">Annually <span class="save-badge">Save 20%</span></span>
+        </div>
+    </header>
+
+    <!-- Pricing Cards -->
+    <section class="pricing-cards-section">
+        <div class="container">
+            <div class="pricing-grid reveal">
+
+                <!-- Growth Tier -->
+                <div class="pricing-card glass-panel">
+                    <div class="tier-header">
+                        <h3>Growth</h3>
+                        <p>For rising D2C brands ready to automate.</p>
+                    </div>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount" data-monthly="499" data-annual="399">399</span>
+                        <span class="period">/mo</span>
+                    </div>
+                    <ul class="feature-checklist">
+                        <li><i class="ph-fill ph-check-circle"></i> Up to $20k Ad Spend</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Meta & Google Ads Integration</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Standard Smart Catalog</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Email Support</li>
+                    </ul>
+                    <a href="index.html#demo" class="btn btn-secondary btn-full">Start Free Trial</a>
+                </div>
+
+                <!-- Scale Tier (Popular) -->
+                <div class="pricing-card glass-panel popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="tier-header">
+                        <h3>Scale</h3>
+                        <p>Advanced automation for high-volume stores.</p>
+                    </div>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount" data-monthly="999" data-annual="799">799</span>
+                        <span class="period">/mo</span>
+                    </div>
+                    <ul class="feature-checklist">
+                        <li><i class="ph-fill ph-check-circle text-red"></i> Up to $100k Ad Spend</li>
+                        <li><i class="ph-fill ph-check-circle text-red"></i> All Platforms (Amazon, TikTok…)</li>
+                        <li><i class="ph-fill ph-check-circle text-red"></i> AI Catalog Optimization</li>
+                        <li><i class="ph-fill ph-check-circle text-red"></i> Priority Chat Support</li>
+                        <li><i class="ph-fill ph-check-circle text-red"></i> Advanced Analytics & Attribution</li>
+                    </ul>
+                    <a href="index.html#demo" class="btn btn-primary btn-glow btn-full">Book a Demo</a>
+                </div>
+
+                <!-- Enterprise Tier -->
+                <div class="pricing-card glass-panel">
+                    <div class="tier-header">
+                        <h3>Enterprise</h3>
+                        <p>Fully managed services and custom integrations.</p>
+                    </div>
+                    <div class="price">
+                        <span class="amount" style="font-size:2.2rem">Custom</span>
+                    </div>
+                    <ul class="feature-checklist">
+                        <li><i class="ph-fill ph-check-circle"></i> Unlimited Ad Spend</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Dedicated Account Manager</li>
+                        <li><i class="ph-fill ph-check-circle"></i> Custom Reporting Dashboards</li>
+                        <li><i class="ph-fill ph-check-circle"></i> API Access & Custom Rules</li>
+                        <li><i class="ph-fill ph-check-circle"></i> White-glove Onboarding</li>
+                    </ul>
+                    <a href="index.html#demo" class="btn btn-secondary btn-full">Contact Sales</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+        <div class="container reveal">
+            <h2 class="section-title">Common Pricing Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question"><span>Is there a setup fee?</span><i
+                            class="ph ph-caret-down"></i></button>
+                    <div class="faq-answer">
+                        <p>No hidden setup fees for Growth and Scale plans. Enterprise implementations may have custom
+                            setup costs depending on backend complexity.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question"><span>What happens if I exceed my ad spend limit?</span><i
+                            class="ph ph-caret-down"></i></button>
+                    <div class="faq-answer">
+                        <p>If you consistently exceed your tier's limit over a 3-month average, your account executive
+                            will reach out to help you graduate to the next tier. We never pause campaigns
+                            automatically.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question"><span>Can I switch from monthly to annual billing later?</span><i
+                            class="ph ph-caret-down"></i></button>
+                    <div class="faq-answer">
+                        <p>Yes, you can upgrade to annual billing at any time to instantly take advantage of the 20%
+                            discount.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-bottom">
+            <div class="footer-brand">
+                <a href="index.html" class="logo"><i class="ph-fill ph-infinity"></i><span>AdYogi</span></a>
+                <p>&copy; 2026 AdYogi. All rights reserved.</p>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="ph-fill ph-instagram-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-linkedin-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-youtube-logo"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggle = document.getElementById('billing-switch');
+            const amounts = document.querySelectorAll('.amount[data-monthly]');
+            const monthlyLabel = document.getElementById('monthly-label');
+            const annualLabel = document.getElementById('annual-label');
+
+            toggle.addEventListener('change', (e) => {
+                const isMonthly = e.target.checked;
+                monthlyLabel.classList.toggle('active', isMonthly);
+                annualLabel.classList.toggle('active', !isMonthly);
+                amounts.forEach(el => {
+                    el.style.opacity = '0';
+                    setTimeout(() => {
+                        el.textContent = isMonthly ? el.dataset.monthly : el.dataset.annual;
+                        el.style.opacity = '1';
+                    }, 180);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
