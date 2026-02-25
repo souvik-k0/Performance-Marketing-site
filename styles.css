@@ -441,6 +441,7 @@ textarea {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin-top: 3rem;
 }
 
 .integration-logos p {
@@ -2019,6 +2020,10 @@ input:checked+.slider:before {
     .btn-large {
         font-size: .95rem;
         padding: .9rem 1.5rem;
+    }
+
+    .integration-logos {
+        margin-top: 2rem;
     }
 
     .brand {
