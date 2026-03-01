@@ -35,7 +35,7 @@
             <div class="nav-links" id="nav-links">
                 <a href="#solutions">Solutions</a>
                 <a href="pricing.html">Pricing</a>
-                <a href="resources.html">Resources</a>
+                <a href="/resources">Resources</a>
                 <a href="about.html">About Us</a>
             </div>
             <a href="#demo" class="btn btn-primary btn-glow nav-cta">Book a Demo</a>
@@ -47,7 +47,7 @@
             <a href="#how-it-works" class="drawer-link">How It Works</a>
             <a href="#solutions" class="drawer-link">Solutions</a>
             <a href="pricing.html" class="drawer-link">Pricing</a>
-            <a href="resources.html" class="drawer-link">Resources</a>
+            <a href="/resources" class="drawer-link">Resources</a>
             <a href="about.html" class="drawer-link">About Us</a>
             <a href="#demo" class="btn btn-primary btn-full drawer-cta">Book a Demo</a>
         </div>
@@ -370,7 +370,8 @@
             </div>
             <div class="enterprise-content">
                 <h2 class="section-title">Are You An Enterprise Brand Looking To Outsource Ad Operations?</h2>
-                <p>Sign up for BrandBiography Managed Services and get access to a dedicated Account Manager for your brand.</p>
+                <p>Sign up for BrandBiography Managed Services and get access to a dedicated Account Manager for your
+                    brand.</p>
                 <ul class="check-list">
                     <li><i class="ph-fill ph-check-circle text-red"></i> Stop bleeding money and time on unoptimized Ads
                     </li>
@@ -428,7 +429,8 @@
                             class="ph-fill ph-star text-red"></i><i class="ph-fill ph-star text-red"></i><i
                             class="ph-fill ph-star text-red"></i>
                     </div>
-                    <p class="quote">"Within 90 days our ROAS went from 2.1 to 4.8. BrandBiography's product-level automation is
+                    <p class="quote">"Within 90 days our ROAS went from 2.1 to 4.8. BrandBiography's product-level
+                        automation is
                         unlike anything else on the market. Highly recommended."</p>
                     <div class="author">
                         <div class="avatar">RS</div>
@@ -455,7 +457,8 @@
                         <i class="ph ph-caret-down"></i>
                     </button>
                     <div class="faq-answer">
-                        <p>BrandBiography supports Meta (Facebook & Instagram), Google Ads, Amazon Ads, Flipkart, Myntra,
+                        <p>BrandBiography supports Meta (Facebook & Instagram), Google Ads, Amazon Ads, Flipkart,
+                            Myntra,
                             Blinkit, Zepto, TikTok, and Walmart. We connect with all major eCommerce platforms.</p>
                     </div>
                 </div>
@@ -485,7 +488,8 @@
                         <i class="ph ph-caret-down"></i>
                     </button>
                     <div class="faq-answer">
-                        <p>Absolutely. BrandBiography connects to your existing Meta, Google, and Marketplace ad accounts. We
+                        <p>Absolutely. BrandBiography connects to your existing Meta, Google, and Marketplace ad
+                            accounts. We
                             don't require you to start fresh — we optimize what you already have.</p>
                     </div>
                 </div>
@@ -506,7 +510,8 @@
                         <i class="ph ph-caret-down"></i>
                     </button>
                     <div class="faq-answer">
-                        <p>Not at all! Many of our clients use BrandBiography alongside their existing agencies. We provide the
+                        <p>Not at all! Many of our clients use BrandBiography alongside their existing agencies. We
+                            provide the
                             technical automation and smart catalog structure, freeing up your agency to focus purely on
                             creative strategy and high-level growth planning.</p>
                     </div>
@@ -542,28 +547,31 @@
                 <form id="demo-form">
                     <div class="input-group">
                         <label>Your Name*</label>
-                        <input type="text" placeholder="John Doe" required>
+                        <input type="text" name="name" placeholder="John Doe" required>
                     </div>
                     <div class="input-group">
                         <label>Work Email*</label>
-                        <input type="email" placeholder="john@company.com" required>
+                        <input type="email" name="email" placeholder="john@company.com" required>
                     </div>
                     <div class="input-group">
                         <label>Company Name*</label>
-                        <input type="text" placeholder="Acme Corp" required>
+                        <input type="text" name="company" placeholder="Acme Corp" required>
                     </div>
                     <div class="input-group">
                         <label>Monthly Ad Spends*</label>
-                        <select required>
+                        <select name="adSpend" required>
                             <option value="">Please Select</option>
-                            <option value="under5k">Under $5k</option>
-                            <option value="5k_20k">$5k - $20k</option>
-                            <option value="20k_50k">$20k - $50k</option>
-                            <option value="above50k">Above $50k</option>
+                            <option value="Under $5k">Under $5k</option>
+                            <option value="$5k - $20k">$5k - $20k</option>
+                            <option value="$20k - $50k">$20k - $50k</option>
+                            <option value="Above $50k">Above $50k</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary btn-full btn-glow">Book My Free Demo</button>
+                    <button type="submit" class="btn btn-primary btn-full btn-glow">Book My Free Demo</button>
                     <p class="form-note"><i class="ph ph-lock-simple"></i> Your data is safe. We'll never share it.</p>
+                    <p id="demo-success"
+                        style="display:none; color:#22c55e; text-align:center; font-weight:600; margin-top:1rem;"><i
+                            class="ph-fill ph-check-circle"></i> Thank you! We'll reach out shortly.</p>
                 </form>
             </div>
         </div>
@@ -603,16 +611,16 @@
             <div class="footer-col">
                 <h4 style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-main);">Resources</h4>
                 <ul style="display: flex; flex-direction: column; gap: 0.75rem;">
-                    <li><a href="resources.html"
+                    <li><a href="/resources"
                             style="color: var(--text-muted); font-size: 0.9rem; transition: color 0.3s;">Case
                             Studies</a></li>
-                    <li><a href="resources.html"
+                    <li><a href="/resources"
                             style="color: var(--text-muted); font-size: 0.9rem; transition: color 0.3s;">Help Center</a>
                     </li>
-                    <li><a href="resources.html"
+                    <li><a href="/resources"
                             style="color: var(--text-muted); font-size: 0.9rem; transition: color 0.3s;">eCommerce
                             Blog</a></li>
-                    <li><a href="resources.html"
+                    <li><a href="/resources"
                             style="color: var(--text-muted); font-size: 0.9rem; transition: color 0.3s;">Webinars</a>
                     </li>
                 </ul>

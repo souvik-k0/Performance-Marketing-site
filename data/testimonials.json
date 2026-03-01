@@ -1,0 +1,32 @@
+[
+    {
+        "id": "seed-t1",
+        "quote": "We wrapped up the first quarter on a high note, and we want to express our gratitude to the BrandBiography team. This is just the start!",
+        "name": "Daphne Gerritse",
+        "role": "CEO, Rain Couture",
+        "initials": "DG",
+        "rating": 5,
+        "visible": true,
+        "createdAt": "2026-01-10T10:00:00Z"
+    },
+    {
+        "id": "seed-t2",
+        "quote": "It's been an absolute game-changer. Managing campaigns on Amazon can be daunting, but BrandBiography has made it so much easier with prompt support.",
+        "name": "Abhishek Urankar",
+        "role": "General Manager, Spaces",
+        "initials": "AU",
+        "rating": 5,
+        "visible": true,
+        "createdAt": "2026-01-20T10:00:00Z"
+    },
+    {
+        "id": "seed-t3",
+        "quote": "Within 90 days our ROAS went from 2.1 to 4.8. BrandBiography's product-level automation is unlike anything else on the market. Highly recommended.",
+        "name": "Rahul Sharma",
+        "role": "Founder, StyleCraft",
+        "initials": "RS",
+        "rating": 5,
+        "visible": true,
+        "createdAt": "2026-02-05T10:00:00Z"
+    }
+]

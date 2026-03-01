@@ -1,0 +1,68 @@
+[
+  {
+    "id": "seed-cs-1",
+    "type": "case-study",
+    "title": "How Jack & Jones increased ROAS by 145% in 6 months",
+    "slug": "how-jack-jones-increased-roas-by-145-in-6-months",
+    "description": "Discover the product-level automation strategies the apparel giant used to cut wasted spend and dominate dynamic retargeting.",
+    "content": "## The Challenge\n\nJack & Jones, a leading apparel brand, was struggling with rising ad costs and diminishing returns on their Meta and Google campaigns. Manual bid management couldn't keep up with the pace of real-time auctions.\n\n## The Solution\n\nBrandBiography's product-level automation engine analyzed over 12,000 SKUs and automatically:\n- Paused underperforming products within 48 hours\n- Increased bids on high-margin items showing purchase intent\n- Created dynamic retargeting segments based on browsing behavior\n\n## The Results\n\n| Metric | Before | After |\n|--------|--------|-------|\n| ROAS | 2.1x | 4.85x |\n| CPA | $28.40 | $11.20 |\n| Ad Spend Waste | 34% | 8% |\n\nWithin 6 months, Jack & Jones saw a **145% increase in ROAS** while reducing wasted ad spend by 76%.",
+    "imageUrl": "",
+    "link": "",
+    "createdAt": "2026-01-15T10:00:00Z"
+  },
+  {
+    "id": "seed-cs-2",
+    "type": "case-study",
+    "title": "Scaling B2B SaaS Leads with Smart Bidding",
+    "slug": "scaling-b2b-saas-leads-with-smart-bidding",
+    "description": "How Acme Corp used BrandBiography's custom bid automation rules to reduce Google Ads CPA by 34%.",
+    "content": "## Overview\n\nAcme Corp, a mid-market SaaS company, needed to scale lead generation without blowing their budget. Their Google Ads campaigns were averaging a $45 CPA — well above their $30 target.\n\n## What We Did\n\nBrandBiography implemented custom bid automation rules that:\n- Analyzed conversion patterns by time of day and device\n- Automatically shifted budget to top-performing ad groups\n- Used predictive modeling to identify high-intent search terms\n\n## Results\n\nAfter 90 days:\n- **CPA dropped from $45 to $29.70** (34% reduction)\n- Lead volume increased by 52%\n- Quality score improved across 78% of keywords",
+    "imageUrl": "",
+    "link": "",
+    "createdAt": "2026-02-01T10:00:00Z"
+  },
+  {
+    "id": "seed-blog-1",
+    "type": "blog",
+    "title": "5 Reasons You Shouldn't Scale Ad Spend Manually",
+    "slug": "5-reasons-you-shouldnt-scale-ad-spend-manually",
+    "description": "Human media buyers cannot compete with real-time bidding algorithms. Here's why you need to automate today.",
+    "content": "Scaling ad spend manually is like trying to win a Formula 1 race on a bicycle. Here are 5 reasons why automation isn't optional anymore:\n\n### 1. Real-Time Auctions Happen in Milliseconds\nBy the time a human reviews performance data, thousands of auctions have already been lost.\n\n### 2. Product Catalogs Are Too Large\nWith 500+ SKUs, no human can optimize bids at the product level effectively.\n\n### 3. Algorithm Changes Are Constant\nMeta and Google update their algorithms weekly. Automation adapts; manual processes lag.\n\n### 4. Diminishing Returns Kick In Fast\nWithout automation, you can't detect the point where additional spend stops converting.\n\n### 5. Your Competitors Are Already Automated\n72% of top-performing D2C brands use automated bidding. If you're not, you're leaving money on the table.",
+    "imageUrl": "",
+    "link": "",
+    "createdAt": "2026-02-10T10:00:00Z"
+  },
+  {
+    "id": "seed-blog-2",
+    "type": "blog",
+    "title": "The 2026 Meta Ads Playbook for D2C Brands",
+    "slug": "the-2026-meta-ads-playbook-for-d2c-brands",
+    "description": "A comprehensive technical guide on navigating algorithm updates, iOS18 changes, and Advantage+ shopping campaigns.",
+    "content": "The Meta advertising landscape has changed dramatically in 2026. Here's your complete playbook:\n\n## iOS18 Impact\nApple's latest privacy changes have further limited tracking. The solution? First-party data and server-side conversion APIs.\n\n## Advantage+ Shopping Campaigns\nMeta's AI-driven campaign type now drives 40% more conversions when fed proper catalog data. Use custom labels to tag products by margin, seasonality, and velocity.\n\n## Creative Strategy\n- UGC outperforms polished ads by 3.2x\n- Short-form video (15s) dominates Reels placement\n- Dynamic creative optimization (DCO) should be enabled on all campaigns\n\n## Budget Allocation\nAllocate 60% to prospecting, 25% to retargeting, and 15% to retention campaigns for optimal full-funnel performance.",
+    "imageUrl": "",
+    "link": "",
+    "createdAt": "2026-02-20T10:00:00Z"
+  },
+  {
+    "id": "386338f2-9a88-4cea-bb84-fa10f333850f",
+    "type": "blog",
+    "title": "Testing the Admin Dashboard",
+    "slug": "testing-the-admin-dashboard",
+    "description": "This is a test blog post created from the admin dashboard.",
+    "content": "",
+    "imageUrl": "",
+    "link": "",
+    "createdAt": "2026-03-01T06:00:41.965Z"
+  },
+  {
+    "id": "16833c16-5eed-426b-8e94-3982af6e474c",
+    "type": "case-study",
+    "title": "SSR Test Case Study",
+    "slug": "ssr-test-case-study",
+    "description": "Testing server-side rendering works end to end",
+    "content": "",
+    "imageUrl": "",
+    "link": "",
+    "createdAt": "2026-03-01T06:20:46.078Z"
+  }
+]

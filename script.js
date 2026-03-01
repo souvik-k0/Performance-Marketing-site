@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    
+
     // --- Navbar Scroll Effect ---
     const navbar = document.getElementById("navbar");
     window.addEventListener("scroll", () => {
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Ease out cubic
                 const eased = 1 - Math.pow(1 - progress, 3);
                 const current = target * eased;
-                
+
                 if (isDecimal) {
                     el.textContent = prefix + current.toFixed(1) + suffix;
                 } else {
@@ -159,25 +159,48 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- Form Submission ---
+    // --- Form Submission (POST to /api/demos) ---
     const form = document.querySelector("#demo-form");
     if (form) {
-        form.addEventListener("submit", (e) => {
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const btn = form.querySelector("button");
+            const btn = form.querySelector("button[type='submit']");
             const originalText = btn.innerText;
             btn.innerHTML = '<i class="ph ph-spinner-gap ph-spin"></i> Submitting...';
             btn.disabled = true;
-            setTimeout(() => {
+
+            const data = {
+                name: form.querySelector('[name="name"]').value,
+                email: form.querySelector('[name="email"]').value,
+                company: form.querySelector('[name="company"]').value,
+                adSpend: form.querySelector('[name="adSpend"]').value
+            };
+
+            try {
+                const res = await fetch('/api/demos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!res.ok) throw new Error('Submission failed');
+
                 btn.innerHTML = '<i class="ph-fill ph-check-circle"></i> Demo Booked!';
                 btn.style.background = "#16a34a";
                 form.reset();
+                const successMsg = document.getElementById('demo-success');
+                if (successMsg) successMsg.style.display = 'block';
+
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.style.background = "";
                     btn.disabled = false;
-                }, 3000);
-            }, 1500);
+                    if (successMsg) successMsg.style.display = 'none';
+                }, 4000);
+            } catch (err) {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                alert('Something went wrong. Please try again.');
+            }
         });
     }
 });
