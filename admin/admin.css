@@ -881,6 +881,7 @@ button {
 
 .chart-wrap {
   position: relative;
+  width: 100%;
   height: 220px;
   display: flex;
   align-items: center;
