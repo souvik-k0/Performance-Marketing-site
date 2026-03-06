@@ -129,24 +129,27 @@ app.put('/api/resources/:id', upload.single('image'), (req, res) => {
   if (!item) return res.status(404).json({ error: 'Not found' });
 
   const { type, title, description, link, content } = req.body;
-  let updates = { ...item };
 
-  if (type) updates.type = type;
-  if (title) {
-    updates.title = title;
-    let newSlug = slugify(title);
+  // Start with existing values
+  let newType = type || item.type;
+  let newTitle = title || item.title;
+  let newSlug = item.slug;
+  let newDescription = description || item.description;
+  let newContent = content !== undefined ? content : item.content;
+  let newLink = link !== undefined ? link : item.link;
+  let newImageUrl = item.imageUrl;
+
+  if (title && title !== item.title) {
+    newSlug = slugify(title);
     let counter = 2;
     while (db.prepare('SELECT id FROM resources WHERE slug = ? AND id != ?').get(newSlug, req.params.id)) {
       newSlug = slugify(title) + '-' + counter++;
     }
-    updates.slug = newSlug;
   }
-  if (description) updates.description = description;
-  if (content !== undefined) updates.content = content;
-  if (link !== undefined) updates.link = link;
+
   if (req.file) {
     if (item.imageUrl) { const p = path.join(__dirname, item.imageUrl); if (fs.existsSync(p)) fs.unlinkSync(p); }
-    updates.imageUrl = `/assets/uploads/${req.file.filename}`;
+    newImageUrl = `/assets/uploads/${req.file.filename}`;
   }
 
   db.prepare(`
@@ -154,9 +157,23 @@ app.put('/api/resources/:id', upload.single('image'), (req, res) => {
     type = @type, title = @title, slug = @slug, description = @description, 
     content = @content, imageUrl = @imageUrl, link = @link 
     WHERE id = @id
-  `).run(updates);
+  `).run({
+    type: newType,
+    title: newTitle,
+    slug: newSlug,
+    description: newDescription,
+    content: newContent,
+    imageUrl: newImageUrl,
+    link: newLink,
+    id: req.params.id
+  });
 
-  res.json(updates);
+  res.json({
+    ...item,
+    type: newType, title: newTitle, slug: newSlug,
+    description: newDescription, content: newContent,
+    imageUrl: newImageUrl, link: newLink
+  });
 });
 
 app.delete('/api/resources/:id', (req, res) => {
