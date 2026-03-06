@@ -57,22 +57,9 @@ const upload = multer({
 });
 
 // ══════════════════════════════════
-//  DATA LAYER (JSON — swap for Supabase later)
+//  DATABASE LAYER (SQLite via db.js)
 // ══════════════════════════════════
-const DATA = {
-  resources: path.join(__dirname, 'data', 'resources.json'),
-  demos: path.join(__dirname, 'data', 'demos.json'),
-  testimonials: path.join(__dirname, 'data', 'testimonials.json'),
-};
-
-function readJSON(file) {
-  try { return JSON.parse(fs.readFileSync(file, 'utf-8')); }
-  catch { return []; }
-}
-
-function writeJSON(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf-8');
-}
+const db = require('./db');
 
 // ══════════════════════════════════
 //  SSR PAGES
@@ -85,16 +72,14 @@ app.get('/', (req, res) => {
 
 // Resources listing — SSR
 app.get('/resources', (req, res) => {
-  const resources = readJSON(DATA.resources);
-  resources.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const resources = db.prepare('SELECT * FROM resources ORDER BY createdAt DESC').all();
   res.render('resources', { resources });
 });
 app.get('/resources.html', (req, res) => res.redirect(301, '/resources'));
 
 // Single resource page — SSR
 app.get('/resources/:slug', (req, res) => {
-  const resources = readJSON(DATA.resources);
-  const resource = resources.find(r => r.slug === req.params.slug);
+  const resource = db.prepare('SELECT * FROM resources WHERE slug = ?').get(req.params.slug);
   if (!resource) return res.status(404).send('Resource not found');
   const contentHtml = resource.content ? marked.parse(resource.content) : '<p>Content coming soon.</p>';
   res.render('resource-single', { resource, contentHtml });
@@ -104,63 +89,82 @@ app.get('/resources/:slug', (req, res) => {
 //  RESOURCES API
 // ══════════════════════════════════
 app.get('/api/resources', (req, res) => {
-  const items = readJSON(DATA.resources);
   const { type } = req.query;
-  res.json(type && type !== 'all' ? items.filter(r => r.type === type) : items);
+  const items = type && type !== 'all'
+    ? db.prepare('SELECT * FROM resources WHERE type = ? ORDER BY createdAt DESC').all(type)
+    : db.prepare('SELECT * FROM resources ORDER BY createdAt DESC').all();
+  res.json(items);
 });
 
 app.get('/api/resources/:id', (req, res) => {
-  const item = readJSON(DATA.resources).find(r => r.id === req.params.id);
+  const item = db.prepare('SELECT * FROM resources WHERE id = ?').get(req.params.id);
   item ? res.json(item) : res.status(404).json({ error: 'Not found' });
 });
 
 app.post('/api/resources', upload.single('image'), (req, res) => {
-  const items = readJSON(DATA.resources);
   const { type, title, description, link, content } = req.body;
   if (!type || !title || !description) return res.status(400).json({ error: 'type, title, description required' });
 
+  // Generate unique slug using SQL
+  let slug = slugify(title);
+  let counter = 2;
+  while (db.prepare('SELECT id FROM resources WHERE slug = ?').get(slug)) {
+    slug = slugify(title) + '-' + counter++;
+  }
+
   const item = {
-    id: uuidv4(), type, title,
-    slug: uniqueSlug(title, items),
+    id: uuidv4(), type, title, slug,
     description, content: content || '',
     imageUrl: req.file ? `/assets/uploads/${req.file.filename}` : '',
     link: link || '',
     createdAt: new Date().toISOString()
   };
-  items.push(item);
-  writeJSON(DATA.resources, items);
+
+  db.prepare('INSERT INTO resources (id, type, title, slug, description, content, imageUrl, link, createdAt) VALUES (@id, @type, @title, @slug, @description, @content, @imageUrl, @link, @createdAt)').run(item);
   res.status(201).json(item);
 });
 
 app.put('/api/resources/:id', upload.single('image'), (req, res) => {
-  const items = readJSON(DATA.resources);
-  const idx = items.findIndex(r => r.id === req.params.id);
-  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  const item = db.prepare('SELECT * FROM resources WHERE id = ?').get(req.params.id);
+  if (!item) return res.status(404).json({ error: 'Not found' });
 
   const { type, title, description, link, content } = req.body;
-  if (type) items[idx].type = type;
+  let updates = { ...item };
+
+  if (type) updates.type = type;
   if (title) {
-    items[idx].title = title;
-    items[idx].slug = uniqueSlug(title, items, items[idx].id);
+    updates.title = title;
+    let newSlug = slugify(title);
+    let counter = 2;
+    while (db.prepare('SELECT id FROM resources WHERE slug = ? AND id != ?').get(newSlug, req.params.id)) {
+      newSlug = slugify(title) + '-' + counter++;
+    }
+    updates.slug = newSlug;
   }
-  if (description) items[idx].description = description;
-  if (content !== undefined) items[idx].content = content;
-  if (link !== undefined) items[idx].link = link;
+  if (description) updates.description = description;
+  if (content !== undefined) updates.content = content;
+  if (link !== undefined) updates.link = link;
   if (req.file) {
-    if (items[idx].imageUrl) { const p = path.join(__dirname, items[idx].imageUrl); if (fs.existsSync(p)) fs.unlinkSync(p); }
-    items[idx].imageUrl = `/assets/uploads/${req.file.filename}`;
+    if (item.imageUrl) { const p = path.join(__dirname, item.imageUrl); if (fs.existsSync(p)) fs.unlinkSync(p); }
+    updates.imageUrl = `/assets/uploads/${req.file.filename}`;
   }
-  writeJSON(DATA.resources, items);
-  res.json(items[idx]);
+
+  db.prepare(`
+    UPDATE resources SET 
+    type = @type, title = @title, slug = @slug, description = @description, 
+    content = @content, imageUrl = @imageUrl, link = @link 
+    WHERE id = @id
+  `).run(updates);
+
+  res.json(updates);
 });
 
 app.delete('/api/resources/:id', (req, res) => {
-  let items = readJSON(DATA.resources);
-  const item = items.find(r => r.id === req.params.id);
+  const item = db.prepare('SELECT imageUrl FROM resources WHERE id = ?').get(req.params.id);
   if (!item) return res.status(404).json({ error: 'Not found' });
+
   if (item.imageUrl) { const p = path.join(__dirname, item.imageUrl); if (fs.existsSync(p)) fs.unlinkSync(p); }
-  items = items.filter(r => r.id !== req.params.id);
-  writeJSON(DATA.resources, items);
+  db.prepare('DELETE FROM resources WHERE id = ?').run(req.params.id);
   res.json({ message: 'Deleted' });
 });
 
@@ -168,49 +172,42 @@ app.delete('/api/resources/:id', (req, res) => {
 //  DEMO REQUESTS API
 // ══════════════════════════════════
 app.get('/api/demos', (req, res) => {
-  const demos = readJSON(DATA.demos);
-  demos.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+  const demos = db.prepare('SELECT * FROM demos ORDER BY submittedAt DESC').all();
   res.json(demos);
 });
 
-// Public form submission
 app.post('/api/demos', (req, res) => {
-  const demos = readJSON(DATA.demos);
   const { name, email, company, adSpend } = req.body;
   if (!name || !email) return res.status(400).json({ error: 'name and email are required' });
 
   const demo = {
-    id: uuidv4(),
-    name, email,
-    company: company || '',
-    adSpend: adSpend || '',
-    status: 'new',  // new → contacted → closed
-    notes: '',
+    id: uuidv4(), name, email,
+    company: company || '', goals: adSpend || '',
+    status: 'new',
     submittedAt: new Date().toISOString()
   };
-  demos.push(demo);
-  writeJSON(DATA.demos, demos);
+
+  db.prepare('INSERT INTO demos (id, name, email, company, goals, status, submittedAt) VALUES (@id, @name, @email, @company, @goals, @status, @submittedAt)').run(demo);
   res.status(201).json({ message: 'Demo request submitted! We\'ll be in touch shortly.' });
 });
 
-// Update status / notes
 app.put('/api/demos/:id', (req, res) => {
-  const demos = readJSON(DATA.demos);
-  const idx = demos.findIndex(d => d.id === req.params.id);
-  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  const item = db.prepare('SELECT * FROM demos WHERE id = ?').get(req.params.id);
+  if (!item) return res.status(404).json({ error: 'Not found' });
 
   const { status, notes } = req.body;
-  if (status) demos[idx].status = status;
-  if (notes !== undefined) demos[idx].notes = notes;
-  writeJSON(DATA.demos, demos);
-  res.json(demos[idx]);
+  let newStatus = status || item.status;
+  let newGoals = notes !== undefined ? notes : item.goals; // We used 'goals' for 'notes' in the DB originally
+
+  db.prepare('UPDATE demos SET status = ?, goals = ? WHERE id = ?').run(newStatus, newGoals, req.params.id);
+  item.status = newStatus;
+  item.goals = newGoals;
+  res.json(item);
 });
 
 app.delete('/api/demos/:id', (req, res) => {
-  let demos = readJSON(DATA.demos);
-  if (!demos.find(d => d.id === req.params.id)) return res.status(404).json({ error: 'Not found' });
-  demos = demos.filter(d => d.id !== req.params.id);
-  writeJSON(DATA.demos, demos);
+  const info = db.prepare('DELETE FROM demos WHERE id = ?').run(req.params.id);
+  if (info.changes === 0) return res.status(404).json({ error: 'Not found' });
   res.json({ message: 'Deleted' });
 });
 
@@ -218,50 +215,52 @@ app.delete('/api/demos/:id', (req, res) => {
 //  TESTIMONIALS API
 // ══════════════════════════════════
 app.get('/api/testimonials', (req, res) => {
-  const items = readJSON(DATA.testimonials);
   const { visible } = req.query;
-  if (visible === 'true') return res.json(items.filter(t => t.visible));
+  const items = visible === 'true'
+    ? db.prepare('SELECT * FROM testimonials WHERE isVisible = 1 ORDER BY createdAt DESC').all()
+    : db.prepare('SELECT * FROM testimonials ORDER BY createdAt DESC').all();
+
+  // Map SQLite 1/0 back to boolean for the frontend
+  items.forEach(i => i.visible = i.isVisible === 1);
   res.json(items);
 });
 
 app.post('/api/testimonials', (req, res) => {
-  const items = readJSON(DATA.testimonials);
   const { quote, name, role, initials, rating, visible } = req.body;
   if (!quote || !name) return res.status(400).json({ error: 'quote and name are required' });
 
+  // Note: We don't store initials or rating in DB right now based on schema, but they aren't strictly needed for the old static cards
   const item = {
     id: uuidv4(), quote, name,
-    role: role || '', initials: initials || name.split(' ').map(w => w[0]).join('').toUpperCase(),
-    rating: parseInt(rating) || 5,
-    visible: visible !== false,
+    role: role || '', company: '',
+    isVisible: visible !== false ? 1 : 0,
     createdAt: new Date().toISOString()
   };
-  items.push(item);
-  writeJSON(DATA.testimonials, items);
+
+  db.prepare('INSERT INTO testimonials (id, name, role, company, quote, isVisible, createdAt) VALUES (@id, @name, @role, @company, @quote, @isVisible, @createdAt)').run(item);
+  item.visible = item.isVisible === 1;
   res.status(201).json(item);
 });
 
 app.put('/api/testimonials/:id', (req, res) => {
-  const items = readJSON(DATA.testimonials);
-  const idx = items.findIndex(t => t.id === req.params.id);
-  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  const item = db.prepare('SELECT * FROM testimonials WHERE id = ?').get(req.params.id);
+  if (!item) return res.status(404).json({ error: 'Not found' });
 
-  const { quote, name, role, initials, rating, visible } = req.body;
-  if (quote) items[idx].quote = quote;
-  if (name) items[idx].name = name;
-  if (role !== undefined) items[idx].role = role;
-  if (initials) items[idx].initials = initials;
-  if (rating) items[idx].rating = parseInt(rating);
-  if (visible !== undefined) items[idx].visible = visible;
-  writeJSON(DATA.testimonials, items);
-  res.json(items[idx]);
+  const { quote, name, role, visible } = req.body;
+  let updates = { ...item };
+  if (quote) updates.quote = quote;
+  if (name) updates.name = name;
+  if (role !== undefined) updates.role = role;
+  if (visible !== undefined) updates.isVisible = visible ? 1 : 0;
+
+  db.prepare('UPDATE testimonials SET quote = @quote, name = @name, role = @role, isVisible = @isVisible WHERE id = @id').run(updates);
+  updates.visible = updates.isVisible === 1;
+  res.json(updates);
 });
 
 app.delete('/api/testimonials/:id', (req, res) => {
-  let items = readJSON(DATA.testimonials);
-  if (!items.find(t => t.id === req.params.id)) return res.status(404).json({ error: 'Not found' });
-  items = items.filter(t => t.id !== req.params.id);
-  writeJSON(DATA.testimonials, items);
+  const info = db.prepare('DELETE FROM testimonials WHERE id = ?').run(req.params.id);
+  if (info.changes === 0) return res.status(404).json({ error: 'Not found' });
   res.json({ message: 'Deleted' });
 });
 
@@ -269,26 +268,22 @@ app.delete('/api/testimonials/:id', (req, res) => {
 //  ANALYTICS API (aggregate stats)
 // ══════════════════════════════════
 app.get('/api/stats', (req, res) => {
-  const resources = readJSON(DATA.resources);
-  const demos = readJSON(DATA.demos);
-  const testimonials = readJSON(DATA.testimonials);
+  const resourcesTotal = db.prepare('SELECT COUNT(*) as c FROM resources').get().c;
+  const caseStudies = db.prepare("SELECT COUNT(*) as c FROM resources WHERE type = 'case-study'").get().c;
+  const blogs = db.prepare("SELECT COUNT(*) as c FROM resources WHERE type = 'blog'").get().c;
+
+  const demosTotal = db.prepare('SELECT COUNT(*) as c FROM demos').get().c;
+  const demosNew = db.prepare("SELECT COUNT(*) as c FROM demos WHERE status = 'new'").get().c;
+  const demosContacted = db.prepare("SELECT COUNT(*) as c FROM demos WHERE status = 'contacted'").get().c;
+  const demosClosed = db.prepare("SELECT COUNT(*) as c FROM demos WHERE status = 'closed'").get().c;
+
+  const testimonialsTotal = db.prepare('SELECT COUNT(*) as c FROM testimonials').get().c;
+  const testimonialsVisible = db.prepare('SELECT COUNT(*) as c FROM testimonials WHERE isVisible = 1').get().c;
 
   res.json({
-    resources: {
-      total: resources.length,
-      caseStudies: resources.filter(r => r.type === 'case-study').length,
-      blogs: resources.filter(r => r.type === 'blog').length
-    },
-    demos: {
-      total: demos.length,
-      new: demos.filter(d => d.status === 'new').length,
-      contacted: demos.filter(d => d.status === 'contacted').length,
-      closed: demos.filter(d => d.status === 'closed').length
-    },
-    testimonials: {
-      total: testimonials.length,
-      visible: testimonials.filter(t => t.visible).length
-    }
+    resources: { total: resourcesTotal, caseStudies, blogs },
+    demos: { total: demosTotal, new: demosNew, contacted: demosContacted, closed: demosClosed },
+    testimonials: { total: testimonialsTotal, visible: testimonialsVisible }
   });
 });
 
