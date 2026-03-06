@@ -312,12 +312,8 @@ app.post('/api/admin/login', (req, res) => {
 });
 
 // ── Start ──
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`\n  🚀 BrandBiography server → http://localhost:${PORT}`);
-    console.log(`  📊 Admin dashboard → http://localhost:${PORT}/admin`);
-    console.log(`  📄 Resources (SSR) → http://localhost:${PORT}/resources\n`);
-  });
-}
-
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`\n  🚀 BrandBiography server → http://localhost:${PORT}`);
+  console.log(`  📊 Admin dashboard → http://localhost:${PORT}/admin`);
+  console.log(`  📄 Resources (SSR) → http://localhost:${PORT}/resources\n`);
+});
