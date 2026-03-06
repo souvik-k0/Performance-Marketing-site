@@ -312,8 +312,8 @@ app.post('/api/admin/login', (req, res) => {
 });
 
 // ── Start ──
-app.listen(PORT, () => {
-  console.log(`\n  🚀 BrandBiography server → http://localhost:${PORT}`);
-  console.log(`  📊 Admin dashboard → http://localhost:${PORT}/admin`);
-  console.log(`  📄 Resources (SSR) → http://localhost:${PORT}/resources\n`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`\n  🚀 BrandBiography server → http://0.0.0.0:${PORT}`);
+  console.log(`  📊 Admin dashboard → http://0.0.0.0:${PORT}/admin`);
+  console.log(`  📄 Resources (SSR) → http://0.0.0.0:${PORT}/resources\n`);
 });
