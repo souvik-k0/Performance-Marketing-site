@@ -1909,11 +1909,9 @@ input:checked+.slider:before {
         transform: translateX(-50%);
         width: 94%;
         border-radius: var(--r-lg);
-        border: 1px solid var(--glass-border);
-        background: var(--glass);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        box-shadow: 0 20px 40px rgba(15, 23, 42, .12);
+        border: 1px solid var(--border);
+        background: #ffffff;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, .14);
         z-index: 99;
         max-height: 0;
         overflow: hidden;
